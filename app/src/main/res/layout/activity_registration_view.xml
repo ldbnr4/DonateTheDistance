@@ -37,7 +37,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textAlignment="center" />
         </LinearLayout>
 
         <LinearLayout
@@ -61,10 +62,23 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                android:textAlignment="center" />
         </LinearLayout>
 
     </LinearLayout>
+
+    <!--<View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#000000" />-->
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Height"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -74,53 +88,18 @@
         android:orientation="horizontal"
         android:weightSum="2">
 
-        <LinearLayout
+        <NumberPicker
+            android:id="@+id/np_feet"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:foregroundGravity="center"
-            android:gravity="right"
-            android:orientation="vertical"
-            android:paddingRight="10dp">
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:foregroundGravity="center"
-                android:gravity="center"
-                android:text="Height (ft)"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <NumberPicker
-                android:id="@+id/np_feet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical" />
-        </LinearLayout>
-
-        <LinearLayout
+        <NumberPicker
+            android:id="@+id/np_inches"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="left"
-            android:orientation="vertical"
-            android:paddingLeft="10dp">
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Height (in)"
-                android:textAppearance="?android:attr/textAppearanceSmall" />
-
-            <NumberPicker
-                android:id="@+id/np_inches"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-        </LinearLayout>
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
     </LinearLayout>
 
     <TextView
@@ -139,6 +118,8 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/textView5"
         android:ems="10"
-        android:inputType="number" />
+        android:inputType="number"
+        android:numeric="integer"
+        android:textAlignment="center" />
 
 </LinearLayout >
