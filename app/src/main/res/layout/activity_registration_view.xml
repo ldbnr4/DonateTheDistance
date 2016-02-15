@@ -16,6 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:baselineAligned="false"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -29,7 +30,7 @@
                 android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="First Name"
+                android:text="@string/first_name_txt"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
@@ -52,15 +53,13 @@
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Last Name"
+                android:text="@string/last_name_txt"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <EditText
                 android:id="@+id/last_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName"
                 android:textAlignment="center" />
@@ -77,7 +76,7 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Height"
+        android:text="@string/height_txt"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <LinearLayout
@@ -106,20 +105,15 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="false"
-        android:layout_alignParentStart="false"
-        android:text="Weight (lb)"
+        android:text="@string/weight_txt"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <EditText
         android:id="@+id/weight"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/textView5"
         android:ems="10"
         android:inputType="number"
-        android:numeric="integer"
         android:textAlignment="center" />
 
     <Button
@@ -127,6 +121,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Submit" />
+        android:onClick="saveData"
+        android:text="@string/submit_txt" />
 
 </LinearLayout >

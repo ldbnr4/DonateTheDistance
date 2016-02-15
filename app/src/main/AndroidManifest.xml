@@ -21,7 +21,7 @@
         <activity android:name=".WorkoutView" />
         <activity android:name=".CharityDetailView" />
         <activity android:name=".ActivitySelectionView" />
-        <activity android:name=".CharitySelectionView"></activity>
+        <activity android:name=".CharitySelectionView" />
     </application>
 
 </manifest>

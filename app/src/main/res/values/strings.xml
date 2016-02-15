@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">DonateTheDistance</string>
+    <string name="submit_txt">Submit</string>
+    <string name="weight_txt">Weight (lb)</string>
+    <string name="height_txt">Height</string>
+    <string name="last_name_txt">Last Name</string>
+    <string name="first_name_txt">First Name</string>
 </resources>
