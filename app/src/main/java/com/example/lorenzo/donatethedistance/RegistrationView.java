@@ -23,6 +23,7 @@ public class RegistrationView extends AppCompatActivity {
         File dir = getFilesDir();
         File file = new File(dir, "userInfo");
         if (file.exists()) {
+            finish();
             startActivity(new Intent(this, CharitySelectionView.class));
         }
 
@@ -74,6 +75,7 @@ public class RegistrationView extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        finish();
         startActivity(new Intent(this, CharitySelectionView.class));
 
 
