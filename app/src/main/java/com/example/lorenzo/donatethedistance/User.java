@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * Created by Lorenzo on 2/15/2016.
+ *
  */
 public class User implements Serializable {
     String first_name, last_name;

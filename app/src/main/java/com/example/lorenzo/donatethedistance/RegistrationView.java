@@ -26,6 +26,8 @@ public class RegistrationView extends AppCompatActivity {
             startActivity(new Intent(this, CharitySelectionView.class));
         }
 
+        //file.delete();
+
         setContentView(R.layout.activity_registration_view);
 
         String[] feetArray = new String[9];
@@ -71,6 +73,8 @@ public class RegistrationView extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        startActivity(new Intent(this, CharitySelectionView.class));
 
 
         /*try {
