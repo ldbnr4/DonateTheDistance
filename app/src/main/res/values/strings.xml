@@ -5,4 +5,13 @@
     <string name="height_txt">Height</string>
     <string name="last_name_txt">Last Name</string>
     <string name="first_name_txt">First Name</string>
+    <string name="select_charity_txt">Select a charity</string>
+    <string name="humane_content_txt">Humane Society logo</string>
+    <string name="humane_name_txt">The Humane Society</string>
+    <string name="water_content_txt">Charity Water logo</string>
+    <string name="charity_water_name_txt">Charity Water</string>
+    <string name="stand_up_content_txt">Stand Up 2 Cancer logo</string>
+    <string name="stand_up_name_txt">Stand Up 2 Cancer</string>
+    <string name="habitat_content_txt">Habitat For Humanity logo</string>
+    <string name="habitat_name_txt">Habitat For Humanity</string>
 </resources>
