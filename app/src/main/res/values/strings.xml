@@ -14,4 +14,9 @@
     <string name="stand_up_name_txt">Stand Up 2 Cancer</string>
     <string name="habitat_content_txt">Habitat For Humanity logo</string>
     <string name="habitat_name_txt">Habitat For Humanity</string>
+    <string name="run_txt">Run</string>
+    <string name="walk_txt">Walk</string>
+    <string name="bike_txt">Bike</string>
+    <string name="btn_stop_location_updates">STOP LOCATION UPDATES</string>
+    <string name="btn_start_location_updates">START LOCATION UPDATES</string>
 </resources>

@@ -3,10 +3,13 @@ package com.example.lorenzo.donatethedistance;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ActivitySelectionView extends AppCompatActivity {
+
+    private static final String SELECTED_WORKOUT = "selected workout";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,13 @@ public class ActivitySelectionView extends AppCompatActivity {
         } else if (message.equals(getString(R.string.stand_up_name_txt))) {
             imageView.setImageResource(R.drawable.stand_up_to_cancer_small);
         }
+
     }
 
-
+    public void runSelection(View view) {
+        finish();
+        Intent intent = new Intent(this, WorkoutView.class);
+        intent.putExtra(SELECTED_WORKOUT, getString(R.string.run_txt));
+        startActivity(intent);
+    }
 }

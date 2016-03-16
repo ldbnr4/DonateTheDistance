@@ -52,7 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Walk"
+            android:text="@string/walk_txt"
             android:textSize="20dp" />
 
         <Button
@@ -60,7 +60,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Run"
+            android:onClick="runSelection"
+            android:text="@string/run_txt"
             android:textSize="20dp" />
 
         <Button
@@ -68,7 +69,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="Bike"
+            android:text="@string/bike_txt"
             android:textSize="20dp" />
 
     </LinearLayout>
