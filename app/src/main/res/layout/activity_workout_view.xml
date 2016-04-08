@@ -13,24 +13,70 @@
         android:id="@+id/lblLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/btnStart"
+        android:layout_alignStart="@+id/btnStart"
+        android:layout_marginBottom="27dp"
         android:text="New Text" />
 
     <Button
-        android:id="@+id/btnShowLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="Show Location" />
-
-    <Button
-        android:id="@+id/btnLocationUpdates"
+        android:id="@+id/btnStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="119dp"
-        android:text="Start Location Updates" />
+        android:text="Start" />
+
+    <TextView
+        android:id="@+id/lblTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView7"
+        android:layout_alignParentStart="true"
+        android:text="00:00:00:000"
+        android:textSize="35dp" />
+
+    <TextView
+        android:id="@+id/lblDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView7"
+        android:layout_alignStart="@+id/lblLocation"
+        android:text="0 mi"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textView8"
+        android:layout_alignParentStart="true"
+        android:text="Distance:"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lblLocation"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="38dp"
+        android:text="Pace:"
+        android:textSize="25dp" />
+
+    <TextView
+        android:id="@+id/lblPace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView8"
+        android:layout_toEndOf="@+id/textView7"
+        android:text="0 m/s"
+        android:textSize="20dp" />
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>
