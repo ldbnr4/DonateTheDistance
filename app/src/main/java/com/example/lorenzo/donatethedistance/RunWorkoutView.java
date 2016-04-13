@@ -8,6 +8,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -45,18 +47,18 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class WorkoutView extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
+public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener, LocationListener, OnMapReadyCallback {
 
     // LogCat tag
-    private static final String TAG = WorkoutView.class.getSimpleName();
+    private static final String TAG = RunWorkoutView.class.getSimpleName();
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     protected static Random random = new Random();
-    static ArrayList<Location> positions = new ArrayList<>();
     // Location updates intervals in sec
     private static int UPDATE_INTERVAL = 10000; // 10 sec
     private static int FATEST_INTERVAL = 1000; // 1 sec
-    private static int DISPLACEMENT = 10; // 10 meters
+    private static int DISPLACEMENT = 5; // 10 meters
+    ArrayList<Location> positions = new ArrayList<>();
     TextView lblTime;
     TextView lblDistance;
     TextView lblPace;
@@ -98,6 +100,8 @@ public class WorkoutView extends AppCompatActivity implements GoogleApiClient.Co
     private TextView lblLocation;
     private Button btnStart;
     private GoogleMap mGoogleMap;
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -141,7 +145,7 @@ public class WorkoutView extends AppCompatActivity implements GoogleApiClient.Co
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_workout_view);
+        setContentView(R.layout.activity_run_workout_view);
 
 
         lblLocation = (TextView) findViewById(R.id.lblLocation);
@@ -162,18 +166,25 @@ public class WorkoutView extends AppCompatActivity implements GoogleApiClient.Co
             @Override
             public void onClick(View v) {
                 if (t == 1) {
-                    btnStart.setText("Pause");
+                    togglePeriodicLocationUpdates();
+                    btnStart.setText("Stop");
                     starttime = SystemClock.uptimeMillis();
                     handler.postDelayed(updateTimer, 0);
                     t = 0;
                 } else {
+                    togglePeriodicLocationUpdates();
                     btnStart.setText("Start");
                     lblTime.setTextColor(Color.BLUE);
                     timeSwapBuff += timeInMilliseconds;
                     handler.removeCallbacks(updateTimer);
                     t = 1;
+
+                    float calsBurned = calculateCalBurned();
+                    SQLiteDatabase donateDB = SQLiteDatabase.openDatabase("DonateTheDistance", null, MODE_PRIVATE);
+                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB);");
+                    //donateDB.execSQL("INSERT INTO User VALUES('"+new RunningBikingWorkoutSummary(positions, lblTime.getText())+"');");
+                    donateDB.close();
                 }
-                togglePeriodicLocationUpdates();
             }
         });
 
@@ -319,7 +330,7 @@ public class WorkoutView extends AppCompatActivity implements GoogleApiClient.Co
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "WorkoutView Page", // TODO: Define a title for the content shown.
+                "RunWorkoutView Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -380,7 +391,7 @@ public class WorkoutView extends AppCompatActivity implements GoogleApiClient.Co
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         Action viewAction = Action.newAction(
                 Action.TYPE_VIEW, // TODO: choose an action type.
-                "WorkoutView Page", // TODO: Define a title for the content shown.
+                "RunWorkoutView Page", // TODO: Define a title for the content shown.
                 // TODO: If you have web page content that matches this app activity's content,
                 // make sure this auto-generated web page URL is correct.
                 // Otherwise, set the URL to null.
@@ -470,5 +481,20 @@ public class WorkoutView extends AppCompatActivity implements GoogleApiClient.Co
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
+    }
+
+    private float calculateCalBurned() {
+        SQLiteDatabase donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
+        Cursor resultSet = donateDB.rawQuery("Select * from Workouts", null);
+        if (resultSet.getCount() == 0) {
+            donateDB.close();
+            resultSet.close();
+            return 0;
+        }
+        resultSet.moveToFirst();
+        float weightInKG = resultSet.getInt(5) * 2.2046226218f;
+        donateDB.close();
+        resultSet.close();
+        return weightInKG * .0175f * Consts.RUN_MET;
     }
 }

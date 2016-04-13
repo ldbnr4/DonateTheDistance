@@ -19,4 +19,5 @@
     <string name="bike_txt">Bike</string>
     <string name="btn_stop_location_updates">STOP LOCATION UPDATES</string>
     <string name="btn_start_location_updates">START LOCATION UPDATES</string>
+    <string name="google_app_id">1018926986547</string>
 </resources>

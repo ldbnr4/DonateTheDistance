@@ -1,33 +1,47 @@
 package com.example.lorenzo.donatethedistance;
 
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.NumberPicker;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 public class RegistrationView extends AppCompatActivity {
+
+    SQLiteDatabase donateDB;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
+        donateDB.execSQL("CREATE TABLE IF NOT EXISTS User(" +
+                "firstName VARCHAR," +
+                "lastName VARCHAR," +
+                "heightFT INT," +
+                "heightIN INT," +
+                "weightLbs INT);");
 
-        File dir = getFilesDir();
-        File file = new File(dir, "userInfo");
-        if (file.exists()) {
+        Cursor resultSet = donateDB.rawQuery("Select * from User", null);
+        if (resultSet.getCount() > 0) {
+            resultSet.close();
+            donateDB.close();
             finish();
             startActivity(new Intent(this, CharitySelectionView.class));
         }
-
-        //file.delete();
+        resultSet.close();
 
         setContentView(R.layout.activity_registration_view);
 
@@ -50,6 +64,9 @@ public class RegistrationView extends AppCompatActivity {
         np.setMaxValue(inchesArray.length - 1);
         np.setDisplayedValues(inchesArray);
 
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
 
@@ -60,7 +77,11 @@ public class RegistrationView extends AppCompatActivity {
         int height_in = ((NumberPicker) findViewById(R.id.np_inches)).getValue();
         int weight = Integer.parseInt(((EditText) findViewById(R.id.weight)).getText().toString());
 
-        FileOutputStream fos = null;
+        donateDB.execSQL("INSERT INTO User VALUES('" + first_name + "','" + last_name + "'," +
+                "'" + height_ft + "','" + height_in + "','" + weight + "');");
+        donateDB.close();
+
+        /*FileOutputStream fos = null;
         try {
             fos = openFileOutput("userInfo", Context.MODE_PRIVATE);
         } catch (FileNotFoundException e) {
@@ -73,24 +94,49 @@ public class RegistrationView extends AppCompatActivity {
             fos.close();
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
         finish();
         startActivity(new Intent(this, CharitySelectionView.class));
+    }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
-        /*try {
-            FileInputStream input  = openFileInput("userInfo");
-            ObjectInputStream objectInput = new ObjectInputStream(input);
-            try {
-                User fileUser = (User) objectInput.readObject();
-                System.out.println(fileUser.toString());
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            input.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "RegistrationView Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.lorenzo.donatethedistance/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "RegistrationView Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.example.lorenzo.donatethedistance/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 }

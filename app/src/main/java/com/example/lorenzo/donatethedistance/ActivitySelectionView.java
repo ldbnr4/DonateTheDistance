@@ -41,7 +41,7 @@ public class ActivitySelectionView extends AppCompatActivity {
 
     public void runSelection(View view) {
         finish();
-        Intent intent = new Intent(this, WorkoutView.class);
+        Intent intent = new Intent(this, RunWorkoutView.class);
         intent.putExtra(SELECTED_WORKOUT, getString(R.string.run_txt));
         startActivity(intent);
     }
