@@ -9,7 +9,9 @@ import android.widget.TextView;
 
 public class ActivitySelectionView extends AppCompatActivity {
 
-    private static final String SELECTED_WORKOUT = "selected workout";
+    public static final String SELECTED_WORKOUT = "selected workout";
+    public static final String SELECTED_CHARITY = "selected charity";
+    String message;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,22 +20,27 @@ public class ActivitySelectionView extends AppCompatActivity {
 
         //Get message from intent
         Intent intent = getIntent();
-        String message = intent.getStringExtra(CharitySelectionView.SELECTED_CHARITY);
+        message = intent.getStringExtra(CharitySelectionView.SELECTED_CHARITY);
 
         //Create the text view
         TextView textView = (TextView) findViewById(R.id.charityText);
         //textView.setTextSize(40);
+        assert textView != null;
         textView.setText(message);
 
         ImageView imageView = (ImageView) findViewById(R.id.charityImage);
 
         if (message.equals(getString(R.string.charity_water_name_txt))) {
+            assert imageView != null;
             imageView.setImageResource(R.drawable.charity_water);
         } else if (message.equals(getString(R.string.habitat_name_txt))) {
+            assert imageView != null;
             imageView.setImageResource(R.drawable.habitat_for_humanity_small);
         } else if (message.equals(getString(R.string.humane_name_txt))) {
+            assert imageView != null;
             imageView.setImageResource(R.drawable.the_humane_society_small);
         } else if (message.equals(getString(R.string.stand_up_name_txt))) {
+            assert imageView != null;
             imageView.setImageResource(R.drawable.stand_up_to_cancer_small);
         }
 
@@ -43,6 +50,7 @@ public class ActivitySelectionView extends AppCompatActivity {
         finish();
         Intent intent = new Intent(this, RunWorkoutView.class);
         intent.putExtra(SELECTED_WORKOUT, getString(R.string.run_txt));
+        intent.putExtra(SELECTED_CHARITY, message);
         startActivity(intent);
     }
 }

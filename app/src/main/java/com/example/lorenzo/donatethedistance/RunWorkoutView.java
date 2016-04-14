@@ -25,7 +25,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
@@ -184,20 +183,26 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
                     timeSwapBuff += timeInMilliseconds;
                     handler.removeCallbacks(updateTimer);
                     t = 1;
-                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB);");
+
                     float duration = 0;
-                    String[] split = String.valueOf(lblTime.getText()).split(":");
-                    duration += Integer.valueOf(split[0]) * 3600;
-                    duration += Integer.valueOf(split[1]) * 60;
-                    duration += Integer.valueOf(split[2]);
-                    duration += Integer.valueOf(split[3]) * 0.001;
+                    //String[] split = String.valueOf(lblTime.getText()).split(":");
+                    duration += hrs * 3600;
+                    duration += mins * 60;
+                    duration += secs;
+                    duration += milliseconds * 0.001;
+
                     SimpleDateFormat df = new SimpleDateFormat("MM/d/yyyy", Locale.US);
                     String date = df.format(new Date());
 
                     float calsBurned = calculateCalBurned();
-                    donateDB.execSQL("INSERT INTO Workouts VALUES('" + gson.toJson(new RunningBikingWorkoutSummary(positions, duration, date, calsBurned,
-                            Float.parseFloat((String) lblDistance.getText()))) + "');");
+                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB);");
+                    Intent intent = getIntent();
+                    donateDB.execSQL("INSERT INTO Workouts VALUES('" + gson.toJson(new RunningBikingWorkoutSummary(positions, duration, date,
+                            calsBurned, Float.parseFloat((String) lblDistance.getText()), intent.getStringExtra(ActivitySelectionView.SELECTED_CHARITY),
+                            intent.getStringExtra(ActivitySelectionView.SELECTED_WORKOUT))) + "');");
                     donateDB.close();
+                    finish();
+                    startActivity(new Intent(RunWorkoutView.this, SponsorView.class));
                 }
             }
         });
@@ -450,7 +455,9 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onLocationChanged(Location location) {
-        if (mLastLocation == null || mLastLocation.equals(location)) {
+        if (mLastLocation == null) {
+            mLastLocation = location;
+        } else if (mLastLocation.equals(location)) {
             return;
         }
         location.setSpeed(randomInRange());
@@ -467,8 +474,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
         mGoogleMap.animateCamera(cu);
 
-        Toast.makeText(getApplicationContext(), "Location changed!",
-                Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
 
         // Displaying the new location on UI
         displayLocation();

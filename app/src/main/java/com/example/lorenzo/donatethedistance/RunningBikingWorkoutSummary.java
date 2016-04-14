@@ -15,8 +15,8 @@ public class RunningBikingWorkoutSummary extends WorkoutSummary {
     float distance;
 
     public RunningBikingWorkoutSummary(ArrayList<Location> locations,
-                                       float duration, String date, float caloriesBurned, float distance) {
-        super(caloriesBurned);
+                                       float duration, String date, float caloriesBurned, float distance, String charity, String type) {
+        super(caloriesBurned, type, charity);
         this.locations = locations;
         this.duration = duration;
         this.date = date;

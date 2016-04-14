@@ -18,7 +18,7 @@ public class CharitySelectionView extends AppCompatActivity {
         setContentView(R.layout.activity_charity_selection_view);
 
         TableLayout yourRootLayout = (TableLayout) findViewById(R.id.table);
-        int count = yourRootLayout.getChildCount();
+        int count = yourRootLayout != null ? yourRootLayout.getChildCount() : 0;
         for (int i = 0; i < count; i++) {
             View v = yourRootLayout.getChildAt(i);
             if (v instanceof TableRow) {
