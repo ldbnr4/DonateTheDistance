@@ -43,8 +43,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Random;
 
 public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
@@ -89,6 +93,8 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     };
     float[] distances = new float[1];
     float ttlDistance = 0;
+    SQLiteDatabase donateDB;
+    Gson gson = new Gson();
     private int MY_PERMISSIONS_REQUEST_LOCATION = 5;
     private Location mLastLocation;
     // Google client to interact with Google API
@@ -100,8 +106,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     private TextView lblLocation;
     private Button btnStart;
     private GoogleMap mGoogleMap;
-
-
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -154,6 +158,8 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
         lblDistance = (TextView) findViewById(R.id.lblDistance);
         lblPace = (TextView) findViewById(R.id.lblPace);
 
+        donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
+
         // First we need to check availability of play services
         if (checkPlayServices()) {
             // Building the GoogleApi client
@@ -178,11 +184,19 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
                     timeSwapBuff += timeInMilliseconds;
                     handler.removeCallbacks(updateTimer);
                     t = 1;
+                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB);");
+                    float duration = 0;
+                    String[] split = String.valueOf(lblTime.getText()).split(":");
+                    duration += Integer.valueOf(split[0]) * 3600;
+                    duration += Integer.valueOf(split[1]) * 60;
+                    duration += Integer.valueOf(split[2]);
+                    duration += Integer.valueOf(split[3]) * 0.001;
+                    SimpleDateFormat df = new SimpleDateFormat("MM/d/yyyy", Locale.US);
+                    String date = df.format(new Date());
 
                     float calsBurned = calculateCalBurned();
-                    SQLiteDatabase donateDB = SQLiteDatabase.openDatabase("DonateTheDistance", null, MODE_PRIVATE);
-                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB);");
-                    //donateDB.execSQL("INSERT INTO User VALUES('"+new RunningBikingWorkoutSummary(positions, lblTime.getText())+"');");
+                    donateDB.execSQL("INSERT INTO Workouts VALUES('" + gson.toJson(new RunningBikingWorkoutSummary(positions, duration, date, calsBurned,
+                            Float.parseFloat((String) lblDistance.getText()))) + "');");
                     donateDB.close();
                 }
             }
@@ -436,7 +450,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
     @Override
     public void onLocationChanged(Location location) {
-        if (mLastLocation.equals(location)) {
+        if (mLastLocation == null || mLastLocation.equals(location)) {
             return;
         }
         location.setSpeed(randomInRange());
@@ -470,7 +484,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
             ttlDistance += distances[0];
 
-            lblDistance.setText(String.format("%.2f", (ttlDistance * 0.00062137)) + " mi");
+            lblDistance.setText(String.format("%.2f", (ttlDistance * 0.00062137)));
         }
         lblPace.setText(String.format("%.3f", (26.8224 / location.getSpeed())) + " min/mi");
 
@@ -484,16 +498,14 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     }
 
     private float calculateCalBurned() {
-        SQLiteDatabase donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
-        Cursor resultSet = donateDB.rawQuery("Select * from Workouts", null);
+        Cursor resultSet = donateDB.rawQuery("Select * from User", null);
         if (resultSet.getCount() == 0) {
             donateDB.close();
             resultSet.close();
             return 0;
         }
         resultSet.moveToFirst();
-        float weightInKG = resultSet.getInt(5) * 2.2046226218f;
-        donateDB.close();
+        float weightInKG = resultSet.getInt(4) * 2.2046226218f;
         resultSet.close();
         return weightInKG * .0175f * Consts.RUN_MET;
     }

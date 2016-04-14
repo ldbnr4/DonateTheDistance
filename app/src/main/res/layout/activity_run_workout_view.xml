@@ -41,7 +41,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView7"
         android:layout_alignStart="@+id/lblLocation"
-        android:text="0 mi"
+        android:text="0"
         android:textSize="20dp" />
 
     <TextView
@@ -79,4 +79,13 @@
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/lblDistance"
+        android:layout_toEndOf="@+id/lblPace"
+        android:text="mi"
+        android:textSize="20dp"/>
 </RelativeLayout>
