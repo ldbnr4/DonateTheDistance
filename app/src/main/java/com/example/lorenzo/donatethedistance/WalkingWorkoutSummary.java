@@ -5,7 +5,7 @@ package com.example.lorenzo.donatethedistance;
  *
  */
 public class WalkingWorkoutSummary extends WorkoutSummary {
-    public WalkingWorkoutSummary(float cals, String charity) {
-        super(cals, "Walk", charity);
+    public WalkingWorkoutSummary(int cals, String charity, float workoutDonation) {
+        super(cals, "Walk", charity, workoutDonation);
     }
 }

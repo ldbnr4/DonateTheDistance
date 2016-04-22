@@ -57,10 +57,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     private static final String TAG = RunWorkoutView.class.getSimpleName();
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     protected static Random random = new Random();
-    // Location updates intervals in sec
-    private static int UPDATE_INTERVAL = 10000; // 10 sec
-    private static int FATEST_INTERVAL = 1000; // 1 sec
-    private static int DISPLACEMENT = 5; // 10 meters
     ArrayList<Location> positions = new ArrayList<>();
     TextView lblTime;
     TextView lblDistance;
@@ -74,6 +70,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     int mins = 0;
     int hrs = 0;
     int milliseconds = 0;
+    String workoutType;
     Handler handler = new Handler();
     public Runnable updateTimer = new Runnable() {
         public void run() {
@@ -84,8 +81,8 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
             hrs = mins / 60;
             secs = secs % 60;
             milliseconds = (int) (updatedtime % 1000);
-            lblTime.setText("" + hrs + ":" + String.format("%02d", mins) + ":" + String.format("%02d", secs) + ":"
-                    + String.format("%03d", milliseconds));
+            lblTime.setText("" + hrs + ":" + String.format(Locale.US, "%02d", mins) + ":" + String.format(Locale.US, "%02d", secs) + ":"
+                    + String.format(Locale.US, "%03d", milliseconds));
             lblTime.setTextColor(Color.RED);
             handler.postDelayed(this, 0);
         }
@@ -94,7 +91,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     float ttlDistance = 0;
     SQLiteDatabase donateDB;
     Gson gson = new Gson();
-    private int MY_PERMISSIONS_REQUEST_LOCATION = 5;
     private Location mLastLocation;
     // Google client to interact with Google API
     private GoogleApiClient mGoogleApiClient;
@@ -102,7 +98,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     private boolean mRequestingLocationUpdates = false;
     private LocationRequest mLocationRequest;
     // UI elements
-    private TextView lblLocation;
     private Button btnStart;
     private GoogleMap mGoogleMap;
     /**
@@ -139,7 +134,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
     public static float randomInRange() {
         float min = 0;
-        float max = 5;
+        float max = 3;
         float range = max - min;
         float scaled = random.nextFloat() * range;
         return scaled + min;
@@ -150,8 +145,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_run_workout_view);
 
-
-        lblLocation = (TextView) findViewById(R.id.lblLocation);
         btnStart = (Button) findViewById(R.id.btnStart);
         lblTime = (TextView) findViewById(R.id.lblTimer);
         lblDistance = (TextView) findViewById(R.id.lblDistance);
@@ -191,15 +184,16 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
                     duration += secs;
                     duration += milliseconds * 0.001;
 
-                    SimpleDateFormat df = new SimpleDateFormat("MM/d/yyyy", Locale.US);
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-d H:m", Locale.US);
                     String date = df.format(new Date());
 
                     float calsBurned = calculateCalBurned();
-                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB);");
+                    donateDB.execSQL("CREATE TABLE IF NOT EXISTS Workouts(workout BLOB, date DATE);");
                     Intent intent = getIntent();
+                    workoutType = intent.getStringExtra(ActivitySelectionView.SELECTED_WORKOUT);
                     donateDB.execSQL("INSERT INTO Workouts VALUES('" + gson.toJson(new RunningBikingWorkoutSummary(positions, duration, date,
-                            calsBurned, Float.parseFloat((String) lblDistance.getText()), intent.getStringExtra(ActivitySelectionView.SELECTED_CHARITY),
-                            intent.getStringExtra(ActivitySelectionView.SELECTED_WORKOUT))) + "');");
+                            calsBurned, (ttlDistance * 0.00062137f), intent.getStringExtra(ActivitySelectionView.SELECTED_CHARITY),
+                            workoutType, calculateDonation())) + "','" + date + "');");
                     donateDB.close();
                     finish();
                     startActivity(new Intent(RunWorkoutView.this, SponsorView.class));
@@ -225,9 +219,12 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
      */
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
+        int UPDATE_INTERVAL = 10000;
         mLocationRequest.setInterval(UPDATE_INTERVAL);
+        int FATEST_INTERVAL = 1000;
         mLocationRequest.setFastestInterval(FATEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        int DISPLACEMENT = 5;
         mLocationRequest.setSmallestDisplacement(DISPLACEMENT); // 10 meters
     }
 
@@ -289,6 +286,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
                 // result of the request.
                 System.out.println("NOOOElse");
 
+                int MY_PERMISSIONS_REQUEST_LOCATION = 5;
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
@@ -296,16 +294,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
             return;
         }
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-        if (mLastLocation != null) {
-            double latitude = mLastLocation.getLatitude();
-            double longitude = mLastLocation.getLongitude();
-            lblLocation.setText(latitude + ", " + longitude);
-
-        } else {
-            lblLocation
-                    .setText("(Couldn't get the location. Make sure location is enabled on the device)");
-        }
     }
 
     /**
@@ -490,9 +478,9 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
             ttlDistance += distances[0];
 
-            lblDistance.setText(String.format("%.2f", (ttlDistance * 0.00062137)));
+            lblDistance.setText(String.format(Locale.US, "%.2f", (ttlDistance * 0.00062137)));
         }
-        lblPace.setText(String.format("%.3f", (26.8224 / location.getSpeed())) + " min/mi");
+        lblPace.setText(String.format(Locale.US, "%.3f", (26.8224 / location.getSpeed())) + " min/mi");
 
         // Assign the new location
         mLastLocation = location;
@@ -513,6 +501,15 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
         resultSet.moveToFirst();
         float weightInKG = resultSet.getInt(4) * 2.2046226218f;
         resultSet.close();
-        return weightInKG * .0175f * Consts.RUN_MET;
+        return (weightInKG * .0175f * Consts.RUN_MET);
+    }
+
+    private float calculateDonation() {
+        if (workoutType.equals(getString(R.string.run_txt))) {
+            return (ttlDistance * 0.00062137f) * .50f;
+        } else if (workoutType.equals(getString(R.string.bike_txt))) {
+            return (ttlDistance * 0.00062137f) * .10f;
+        }
+        return 0;
     }
 }

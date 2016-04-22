@@ -8,10 +8,14 @@ public abstract class WorkoutSummary {
     float caloriesBurned;
     String type;
     String charity;
+    float donationAmnt;
 
-    public WorkoutSummary(float caloriesBurned, String type, String charity) {
+    public WorkoutSummary(float caloriesBurned, String type, String charity, float donationAmnt) {
         this.caloriesBurned = caloriesBurned;
         this.type = type;
         this.charity = charity;
+        this.donationAmnt = donationAmnt;
     }
+
+
 }

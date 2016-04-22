@@ -9,15 +9,6 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 tools:context="com.example.lorenzo.donatethedistance.RunWorkoutView">
 
-    <TextView
-        android:id="@+id/lblLocation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnStart"
-        android:layout_alignStart="@+id/btnStart"
-        android:layout_marginBottom="27dp"
-        android:text="New Text" />
-
     <Button
         android:id="@+id/btnStart"
         android:layout_width="wrap_content"
@@ -40,9 +31,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView7"
-        android:layout_alignStart="@+id/lblLocation"
+        android:layout_alignStart="@+id/btnStart"
         android:text="0"
-        android:textSize="20dp" />
+        android:textSize="20dp"/>
 
     <TextView
         android:id="@+id/textView7"
@@ -57,11 +48,11 @@
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/lblLocation"
+        android:layout_above="@+id/btnStart"
         android:layout_alignParentStart="true"
         android:layout_marginBottom="38dp"
         android:text="Pace:"
-        android:textSize="25dp" />
+        android:textSize="25dp"/>
 
     <TextView
         android:id="@+id/lblPace"
