@@ -9,4 +9,51 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.lorenzo.donatethedistance.ActivitySelectionView">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_marginTop="50dp"
+        android:text="Select Your Workout:"
+        android:textSize="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Walk"
+        android:id="@+id/walkButton"
+        android:layout_below="@+id/editText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:onClick="sendWalk" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Run"
+        android:id="@+id/runButton"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/walkButton"
+        android:layout_centerHorizontal="true"
+        android:onClick="sendRun" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bike"
+        android:id="@+id/bikeButton"
+        android:layout_below="@+id/runButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:onClick="sendBike" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Learn More About Your Charity"
+        android:id="@+id/charityButton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

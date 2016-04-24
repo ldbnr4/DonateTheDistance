@@ -21,6 +21,11 @@
         <activity android:name=".WorkoutView" />
         <activity android:name=".CharityDetailView" />
         <activity android:name=".ActivitySelectionView" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+             </intent-filter>
         <activity android:name=".CharitySelectionView" />
     </application>
 
