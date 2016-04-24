@@ -57,7 +57,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     private static final String TAG = RunWorkoutView.class.getSimpleName();
     private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
     protected static Random random = new Random();
-    ArrayList<Location> positions = new ArrayList<>();
+    ArrayList<LocationStat> positions = new ArrayList<>();
     TextView lblTime;
     TextView lblDistance;
     TextView lblPace;
@@ -133,8 +133,8 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
     }
 
     public static float randomInRange() {
-        float min = 0;
-        float max = 3;
+        float min = 2.88f;
+        float max = 4.33f;
         float range = max - min;
         float scaled = random.nextFloat() * range;
         return scaled + min;
@@ -449,10 +449,11 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
             return;
         }
         location.setSpeed(randomInRange());
-        positions.add(location);
+        LocationStat stat = new LocationStat(location.getLatitude(), location.getLongitude(), location.getSpeed());
+        positions.add(stat);
 
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Location m : positions) {
+        for (LocationStat m : positions) {
             builder.include(new LatLng(m.getLatitude(), m.getLongitude()));
         }
         LatLngBounds bounds = builder.build();
@@ -467,7 +468,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
         // Displaying the new location on UI
         displayLocation();
         if (positions.size() >= 2) {
-            Location prevLoc = positions.get(positions.size() - 2);
+            LocationStat prevLoc = positions.get(positions.size() - 2);
 
             mGoogleMap.addPolyline(new PolylineOptions().add(new LatLng(prevLoc.getLatitude(),
                     prevLoc.getLongitude()), new LatLng(location.getLatitude(),

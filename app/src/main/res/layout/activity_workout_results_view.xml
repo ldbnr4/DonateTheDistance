@@ -9,7 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.lorenzo.donatethedistance.WorkoutResultsView">
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView android:id="@+id/scrollView2"
+                xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true">
@@ -24,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/map"
-                android:layout_marginTop="22dp"
+                android:layout_marginTop="15dp"
                 android:text="Chairty:"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -34,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView17"
-                android:layout_marginTop="17dp"
+                android:layout_marginTop="15dp"
                 android:text="Calories burned:"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -44,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView16"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="15dp"
                 android:text="Duration:"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -64,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView19"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="15dp"
                 android:layout_toEndOf="@id/textView20"
                 android:text="Amount donated:"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
@@ -134,7 +135,7 @@
                 android:layout_alignBottom="@+id/textView16"
                 android:layout_toRightOf="@+id/textView16"
                 android:paddingLeft="15dp"
-                android:text="4 mi"
+                android:text="4"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
 
             <TextView
@@ -163,7 +164,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView18"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="15dp"
                 android:text="Average Pace:"
                 android:textAppearance="?android:attr/textAppearanceLarge"/>
 
@@ -174,8 +175,38 @@
                 android:layout_alignBottom="@+id/textView23"
                 android:layout_toEndOf="@id/textView23"
                 android:paddingLeft="15dp"
-                android:text="8 min/mile"
+                android:text="8"
                 android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/lbl_avePace"
+                android:layout_toEndOf="@id/lbl_avePace"
+                android:paddingLeft="5dp"
+                android:text="min/mile"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/lbl_distance"
+                android:layout_toEndOf="@id/lbl_distance"
+                android:paddingLeft="2dp"
+                android:text=" mi"
+                android:textAppearance="?android:attr/textAppearanceMedium"/>
+
+            <Button
+                android:id="@+id/btnVp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textView23"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="View Profile"/>
         </RelativeLayout>
     </ScrollView>
+
 </RelativeLayout>

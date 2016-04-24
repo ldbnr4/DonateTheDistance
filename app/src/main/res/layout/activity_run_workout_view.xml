@@ -21,17 +21,19 @@
         android:id="@+id/lblTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView7"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/map"
+        android:layout_marginTop="49dp"
         android:text="00:00:00:000"
-        android:textSize="35dp" />
+        android:textSize="35dp"/>
 
     <TextView
         android:id="@+id/lblDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView7"
-        android:layout_alignStart="@+id/btnStart"
+        android:layout_marginLeft="15dp"
+        android:layout_toEndOf="@id/textView7"
         android:text="0"
         android:textSize="20dp"/>
 
@@ -39,18 +41,19 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/textView8"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/lblTimer"
+        android:layout_marginTop="20dp"
         android:text="Distance:"
-        android:textSize="25dp" />
+        android:textSize="25dp"/>
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/btnStart"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="38dp"
+        android:layout_below="@+id/textView7"
+        android:layout_marginTop="20dp"
         android:text="Pace:"
         android:textSize="25dp"/>
 
@@ -59,9 +62,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/textView8"
-        android:layout_toEndOf="@+id/textView7"
+        android:layout_marginLeft="15dp"
+        android:layout_toEndOf="@id/textView8"
         android:text="0 m/s"
-        android:textSize="20dp" />
+        android:textSize="20dp"/>
 
     <fragment
         android:id="@+id/map"
@@ -76,7 +80,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/lblDistance"
-        android:layout_toEndOf="@+id/lblPace"
+        android:layout_marginLeft="10dp"
+        android:layout_toEndOf="@id/lblDistance"
         android:text="mi"
         android:textSize="20dp"/>
 </RelativeLayout>

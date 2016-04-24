@@ -1,7 +1,5 @@
 package com.example.lorenzo.donatethedistance;
 
-import android.location.Location;
-
 import java.util.ArrayList;
 
 /**
@@ -9,24 +7,19 @@ import java.util.ArrayList;
  *
  */
 public class RunningBikingWorkoutSummary extends WorkoutSummary {
-    public ArrayList<Location> locations;
-    public float duration;
-    public String date;
-    public float distance;
+    public ArrayList<LocationStat> locations;
     public float avePace;
-    public float range;
+    public float lowSpeed;
+    public float midSpeed;
 
-    public RunningBikingWorkoutSummary(ArrayList<Location> locations, float duration, String date, float caloriesBurned, float distance,
+    public RunningBikingWorkoutSummary(ArrayList<LocationStat> locations, float duration, String date, float caloriesBurned, float distance,
                                        String charity, String type, float donationAmnt) {
-        super(caloriesBurned, type, charity, donationAmnt);
+        super(caloriesBurned, type, charity, donationAmnt, date, duration, distance);
         this.locations = locations;
-        this.duration = duration;
-        this.date = date;
-        this.distance = distance;
         setAvePace(locations);
     }
 
-    private void setAvePace(ArrayList<Location> locations) {
+    private void setAvePace(ArrayList<LocationStat> locations) {
         float max = 0;
         float min = 999999999;
         if (locations.size() == 0) {
@@ -34,8 +27,8 @@ public class RunningBikingWorkoutSummary extends WorkoutSummary {
             return;
         }
         float paceTtl = 0;
-        float speed = 0;
-        for (Location location : locations) {
+        float speed;
+        for (LocationStat location : locations) {
             speed = location.getSpeed();
             if (speed < min) {
                 min = speed;
@@ -44,7 +37,10 @@ public class RunningBikingWorkoutSummary extends WorkoutSummary {
             }
             paceTtl += speed;
         }
-        this.avePace = paceTtl / locations.size();
-        this.range = (max - min) / 3;
+        this.avePace = 26.8224f / (paceTtl / locations.size());
+        float range = (max - min) / 3;
+        lowSpeed = min + range;
+        midSpeed = lowSpeed + range;
+
     }
 }

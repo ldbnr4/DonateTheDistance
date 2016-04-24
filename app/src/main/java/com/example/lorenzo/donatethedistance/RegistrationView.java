@@ -14,6 +14,10 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class RegistrationView extends AppCompatActivity {
 
     SQLiteDatabase donateDB;
@@ -28,29 +32,31 @@ public class RegistrationView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
+        //donateDB.execSQL("DROP TABLE IF EXISTS User;");
+        //donateDB.execSQL("DROP TABLE IF EXISTS Workouts");
         donateDB.execSQL("CREATE TABLE IF NOT EXISTS User(" +
                 "firstName VARCHAR," +
                 "lastName VARCHAR," +
                 "heightFT INT," +
                 "heightIN INT," +
-                "weightLbs INT);");
+                "weightLbs INT," +
+                "date DATE);");
 
-        Cursor resultSet = donateDB.rawQuery("Select * from User", null);
+        Cursor resultSet = donateDB.rawQuery("Select * from User;", null);
         if (resultSet.getCount() > 0) {
-            //donateDB.rawQuery("DROP TABLE IF EXISTS Workouts", null);
             resultSet.close();
             donateDB.close();
             finish();
-            startActivity(new Intent(this, WorkoutResultsView.class));
+            startActivity(new Intent(this, ProfilePageView.class));
         }
         resultSet.close();
-
-        setContentView(R.layout.activity_registration_view);
 
         String[] feetArray = new String[9];
         for (int i = 0; i < feetArray.length; i++) {
             feetArray[i] = Integer.toString(i + 1) + "'";
         }
+
+        setContentView(R.layout.activity_registration_view);
 
         NumberPicker np = (NumberPicker) findViewById(R.id.np_feet);
         assert np != null;
@@ -95,8 +101,11 @@ public class RegistrationView extends AppCompatActivity {
         assert weightView != null;
         int weight = Integer.parseInt(((EditText) weightView).getText().toString());
 
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-d H:m", Locale.US);
+        String date = df.format(new Date());
+
         donateDB.execSQL("INSERT INTO User VALUES('" + first_name + "','" + last_name + "'," +
-                "'" + height_ft + "','" + height_in + "','" + weight + "');");
+                "'" + height_ft + "','" + height_in + "','" + weight + "','" + date + "');");
         donateDB.close();
 
         finish();
