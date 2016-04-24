@@ -5,4 +5,6 @@
     <string name="height_txt">Height</string>
     <string name="last_name_txt">Last Name</string>
     <string name="first_name_txt">First Name</string>
+    <string name="step_counter">android.hardware.sensor.stepcounter</string>
+    <string name="step_detector">android.hardware.sensor.stepdetector</string>
 </resources>
