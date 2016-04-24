@@ -52,10 +52,19 @@ public class WorkoutView extends AppCompatActivity implements SensorEventListene
 
         if (sensor.getType() == Sensor.TYPE_STEP_COUNTER) {
             textView.setText("Step Counter Detected : " + value);
-        } else if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            /*int height = user.height_ft * 12 + user.height_in;
+            double milesWalked = ((height * 0.413) * value)/ 63360;
+            double caloriesBurnedPerMile = .53 * user.weight;
+            double caloriesBurnedTotal = milesWalked * caloriesBurnedPerMile;
+            this is why we need separate activities because we will have different result displays
+            calories and distance can either be shown here or shown in the results page
+            both would be easy to implement
+            */
+
+        } /*else if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
             // For test only. Only allowed value is 1.0 i.e. for step taken
             textView.setText("Step Detector Detected : " + value);
-        }
+        }*/
     }
 
     protected void onResume() {
