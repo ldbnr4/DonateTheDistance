@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.content.Intent;
+import android.view.View;
 import android.widget.TextView;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -22,6 +23,10 @@ public class WorkoutView extends AppCompatActivity implements SensorEventListene
     private Sensor mStepCounterSensor;
 
     private Sensor mStepDetectorSensor;
+
+    public int steps;
+    public double milesWalked;
+    public double moneyDonated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,5 +94,12 @@ public class WorkoutView extends AppCompatActivity implements SensorEventListene
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+    public void stopWorkout(View view) {
+        Intent intent1 = new Intent(this, WorkoutResultsView.class);
+        intent1.putExtra("steps", steps);
+        intent1.putExtra("money", moneyDonated);
+        intent1.putExtra("distance", milesWalked);
+        startActivity(intent1);
     }
 }
