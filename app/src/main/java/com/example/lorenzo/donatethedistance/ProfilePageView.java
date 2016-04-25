@@ -1,10 +1,13 @@
 package com.example.lorenzo.donatethedistance;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -41,6 +44,7 @@ public class ProfilePageView extends AppCompatActivity {
         TextView lbl_TtlCal = (TextView) findViewById(R.id.lbl_TtlCalories);
         LineChart chart = (LineChart) findViewById(R.id.chart);
         ListView listView = (ListView) findViewById(R.id.listView);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         SQLiteDatabase donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
         Cursor resultSet = donateDB.rawQuery("Select * from User", null);
@@ -114,6 +118,23 @@ public class ProfilePageView extends AppCompatActivity {
         CustomAdapter adapter = new CustomAdapter(this, dates, types, charities, dons, cals);
         assert listView != null;
         listView.setAdapter(adapter);
+        assert myToolbar != null;
+        myToolbar.setTitle("");
+        myToolbar.inflateMenu(R.menu.tohome);
+        myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+
+                switch (menuItem.getItemId()) {
+                    case R.id.action_home:
+                        finish();
+                        startActivity(new Intent(ProfilePageView.this, CharitySelectionView.class));
+                        return true;
+                }
+
+                return false;
+            }
+        });
 
 
     }
