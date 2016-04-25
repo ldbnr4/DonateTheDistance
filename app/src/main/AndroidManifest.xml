@@ -41,6 +41,12 @@
         </activity>
         <activity android:name=".CharitySelectionView"/>
         <activity android:name=".walking_activity">
+            <uses-feature
+                android:name="@string/step_detector" android:required="false"/>
+
+            <uses-feature
+                android:name="@string/step_counter" android:required="false"/>
+
         </activity>
     </application>
 
