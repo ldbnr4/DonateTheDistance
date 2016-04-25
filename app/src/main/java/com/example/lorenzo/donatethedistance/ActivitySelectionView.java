@@ -24,7 +24,7 @@ public class ActivitySelectionView extends AppCompatActivity {
 
         //Create the text view
         TextView textView = (TextView) findViewById(R.id.charityText);
-        //textView.setTextSize(40);
+
         assert textView != null;
         textView.setText(message);
 

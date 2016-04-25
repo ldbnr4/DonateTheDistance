@@ -47,7 +47,7 @@ public class RegistrationView extends AppCompatActivity {
             resultSet.close();
             donateDB.close();
             finish();
-            startActivity(new Intent(this, ProfilePageView.class));
+            startActivity(new Intent(this, CharitySelectionView.class));
         }
         resultSet.close();
 
