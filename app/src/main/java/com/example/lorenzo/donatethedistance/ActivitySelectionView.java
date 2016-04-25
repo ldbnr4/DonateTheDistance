@@ -46,6 +46,25 @@ public class ActivitySelectionView extends AppCompatActivity {
 
     }
 
+    /*public void walkSelection(View view) {
+        finish();
+        Intent intent = new Intent(this, WalkWorkoutView.class);
+        intent.putExtra(SELECTED_CHARITY, message);
+        startActivity(intent);
+    }*/
+    public void bikeSelection(View view) {
+        finish();
+        Intent intent = new Intent(this, RunWorkoutView.class);
+        intent.putExtra(SELECTED_WORKOUT, getString(R.string.bike_txt));
+        intent.putExtra(SELECTED_CHARITY, message);
+        startActivity(intent);
+    }
+    public void detailSelection(View view) {
+        finish();
+        Intent intent = new Intent(this, CharityDetailView.class);
+        intent.putExtra(SELECTED_CHARITY, message);
+        startActivity(intent);
+    }
     public void runSelection(View view) {
         finish();
         Intent intent = new Intent(this, RunWorkoutView.class);

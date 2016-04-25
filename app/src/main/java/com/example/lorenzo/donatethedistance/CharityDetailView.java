@@ -14,7 +14,7 @@ public class CharityDetailView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_charity_detail_view);
         Intent intent = getIntent();
-        String charity = intent.getStringExtra("Charity");
+        String charity = intent.getStringExtra(ActivitySelectionView.SELECTED_CHARITY);
         System.out.println(charity);
         /*
         ((TextView)findViewById(R.id.charName)).setText(charity.name);
