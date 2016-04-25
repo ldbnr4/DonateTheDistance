@@ -17,7 +17,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.gson.Gson;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -40,11 +39,6 @@ public class ProfilePageView extends AppCompatActivity {
         TextView lbl_member = (TextView) findViewById(R.id.lbl_memberSince);
         TextView lbl_TtlMiles = (TextView) findViewById(R.id.lbl_TtlMiles);
         TextView lbl_TtlCal = (TextView) findViewById(R.id.lbl_TtlCalories);
-        TextView lbl_date = (TextView) findViewById(R.id.lbl_lastDate);
-        TextView lbl_type = (TextView) findViewById(R.id.lbl_lastType);
-        TextView lbl_charity = (TextView) findViewById(R.id.lbl_lastCharity);
-        TextView lbl_donation = (TextView) findViewById(R.id.lbl_lastDonation);
-        TextView lbl_cal = (TextView) findViewById(R.id.lbl_lastCalories);
         LineChart chart = (LineChart) findViewById(R.id.chart);
         ListView listView = (ListView) findViewById(R.id.listView);
 
@@ -55,28 +49,16 @@ public class ProfilePageView extends AppCompatActivity {
         String memberDate = resultSet.getString(5);
         resultSet.close();
 
-        resultSet = donateDB.rawQuery("SELECT * FROM Workouts ORDER BY datetime(date) DESC LIMIT 1", null);
-        resultSet.moveToFirst();
         Gson gson = new Gson();
-        RunningBikingWorkoutSummary workoutSummary = gson.fromJson(resultSet.getString(0), RunningBikingWorkoutSummary.class);
-        resultSet.close();
-
-        ArrayList<WorkoutSummary> list = new ArrayList<>();
-        resultSet = donateDB.rawQuery("SELECT * FROM Workouts", null);
+        resultSet = donateDB.rawQuery("SELECT * FROM Workouts ORDER BY datetime(date) DESC LIMIT 10", null);
         resultSet.moveToFirst();
-        while (!resultSet.isAfterLast()) {
-            list.add(gson.fromJson(resultSet.getString(0), WorkoutSummary.class));
-            resultSet.moveToNext();
-        }
-        resultSet.close();
-        donateDB.close();
         float allMiles = 0, allCals = 0, yMax = 0;
-        ArrayList<Entry> distances = new ArrayList<>();
-        ArrayList<Entry> donations = new ArrayList<>();
-        int x = 0;
+        ArrayList<Entry> distances = new ArrayList<>(), donations = new ArrayList<>();
         ArrayList<String> dates = new ArrayList<>(), types = new ArrayList<>(), charities = new ArrayList<>();
         ArrayList<Float> dons = new ArrayList<>(), cals = new ArrayList<>();
-        for (WorkoutSummary summary : list) {
+        int x = 0;
+        while (!resultSet.isAfterLast()) {
+            WorkoutSummary summary = gson.fromJson(resultSet.getString(0), WorkoutSummary.class);
             distances.add(new Entry(summary.distance, x));
             donations.add(new Entry(summary.donationAmnt, x));
             allMiles += summary.distance;
@@ -90,7 +72,11 @@ public class ProfilePageView extends AppCompatActivity {
             dons.add(summary.donationAmnt);
             cals.add(summary.caloriesBurned);
             x++;
+            resultSet.moveToNext();
         }
+        resultSet.close();
+        donateDB.close();
+
         LineDataSet setDist = new LineDataSet(distances, "Distances");
         setDist.setAxisDependency(YAxis.AxisDependency.LEFT);
         setDist.setColor(Color.GREEN);
@@ -103,23 +89,13 @@ public class ProfilePageView extends AppCompatActivity {
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(setDist);
         dataSets.add(setDon);
-        ArrayList<String> xVals = range(1, list.size());
+        ArrayList<String> xVals = range(1, dates.size());
         LineData data = new LineData(xVals, dataSets);
 
         assert lbl_name != null;
         lbl_name.setText(userName);
         assert lbl_member != null;
         lbl_member.setText(memberDate);
-        assert lbl_date != null;
-        lbl_date.setText(workoutSummary.date);
-        assert lbl_type != null;
-        lbl_type.setText(workoutSummary.type);
-        assert lbl_charity != null;
-        lbl_charity.setText(workoutSummary.charity);
-        assert lbl_donation != null;
-        lbl_donation.setText(NumberFormat.getCurrencyInstance(Locale.US).format(workoutSummary.donationAmnt));
-        assert lbl_cal != null;
-        lbl_cal.setText(String.valueOf((int) workoutSummary.caloriesBurned));
         assert lbl_TtlMiles != null;
         lbl_TtlMiles.setText(String.format(Locale.US, "%.1f", allMiles));
         assert lbl_TtlCal != null;

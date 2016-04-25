@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">DonateTheDistance</string>
+    <string name="app_name">Donate the Distance</string>
     <string name="submit_txt">Submit</string>
     <string name="weight_txt">Weight (lb)</string>
     <string name="height_txt">Height</string>
