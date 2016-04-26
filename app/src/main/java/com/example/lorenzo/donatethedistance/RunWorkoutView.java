@@ -184,7 +184,7 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
                     duration += secs;
                     duration += milliseconds * 0.001;
 
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-d H:m", Locale.US);
+                    SimpleDateFormat df = new SimpleDateFormat("HH:mm MMM dd, ''yy", Locale.US);
                     String date = df.format(new Date());
 
                     float calsBurned = calculateCalBurned();
@@ -500,9 +500,10 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
             return 0;
         }
         resultSet.moveToFirst();
-        float weightInKG = resultSet.getInt(4) * 2.2046226218f;
+        float weight = resultSet.getInt(4);
         resultSet.close();
-        return (weightInKG * .0175f * Consts.RUN_MET);
+        float distanceTraveled = ttlDistance * 0.00062137f;
+        return (weight * 0.75f * distanceTraveled);
     }
 
     private float calculateDonation() {

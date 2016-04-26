@@ -101,7 +101,7 @@ public class RegistrationView extends AppCompatActivity {
         assert weightView != null;
         int weight = Integer.parseInt(((EditText) weightView).getText().toString());
 
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-d H:m", Locale.US);
+        SimpleDateFormat df = new SimpleDateFormat("HH:mm MMM dd, ''yy", Locale.US);
         String date = df.format(new Date());
 
         donateDB.execSQL("INSERT INTO User VALUES('" + first_name + "','" + last_name + "'," +
