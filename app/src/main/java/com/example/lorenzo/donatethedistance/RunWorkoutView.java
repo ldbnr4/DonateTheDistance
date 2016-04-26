@@ -463,8 +463,6 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
         mGoogleMap.animateCamera(cu);
 
-        //Toast.makeText(getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
-
         // Displaying the new location on UI
         displayLocation();
         if (positions.size() >= 2) {
@@ -479,10 +477,13 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
             ttlDistance += distances[0];
 
-            lblDistance.setText(String.format(Locale.US, "%.2f", (ttlDistance * 0.00062137)));
+            lblDistance.setText(String.format(Locale.US, "%.2f", (ttlDistance * 0.00062137)) + "mi");
         }
-        lblPace.setText(String.format(Locale.US, "%.3f", (26.8224 / location.getSpeed())) + " min/mi");
-
+        if (location.getSpeed() == 0) {
+            lblPace.setText("0 min/mi");
+        } else {
+            lblPace.setText(String.format(Locale.US, "%.3f", (26.8224 / location.getSpeed())) + " min/mi");
+        }
         // Assign the new location
         mLastLocation = location;
     }

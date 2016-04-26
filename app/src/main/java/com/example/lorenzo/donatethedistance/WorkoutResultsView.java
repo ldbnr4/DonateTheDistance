@@ -28,7 +28,7 @@ public class WorkoutResultsView extends AppCompatActivity implements OnMapReadyC
 
     SQLiteDatabase donateDB;
     Gson gson = new Gson();
-    TextView lbl_charity, lbl_amntDonated, lbl_distance, lbl_duration, lbl_calBurned, lbl_avePace, lbl_date;
+    TextView lbl_charity, lbl_amntDonated, lbl_distance, lbl_duration, lbl_calBurned, lbl_avePace;
     RunningBikingWorkoutSummary workoutSummary;
     GoogleMap map;
 
@@ -50,7 +50,7 @@ public class WorkoutResultsView extends AppCompatActivity implements OnMapReadyC
         lbl_duration = (TextView) findViewById(R.id.lbl_duration);
         lbl_calBurned = (TextView) findViewById(R.id.lbl_calBurned);
         lbl_avePace = (TextView) findViewById(R.id.lbl_avePace);
-        lbl_date = (TextView) findViewById(R.id.lbl_date);
+        TextView lbl_workoutType = (TextView) findViewById(R.id.lbl_workoutType);
 
         lbl_charity.setText(workoutSummary.charity);
         NumberFormat currencyInstance = NumberFormat.getCurrencyInstance(Locale.US);
@@ -68,7 +68,8 @@ public class WorkoutResultsView extends AppCompatActivity implements OnMapReadyC
         );
         lbl_calBurned.setText(String.valueOf((int) workoutSummary.caloriesBurned));
         lbl_avePace.setText(String.format(Locale.US, "%.2f", workoutSummary.avePace));
-        lbl_date.setText(workoutSummary.date);
+        assert lbl_workoutType != null;
+        lbl_workoutType.setText("Recap from your " + workoutSummary.type.toLowerCase());
 
         Button vpBtn = (Button) findViewById(R.id.btnVp);
         assert vpBtn != null;
@@ -77,6 +78,16 @@ public class WorkoutResultsView extends AppCompatActivity implements OnMapReadyC
             public void onClick(View v) {
                 finish();
                 startActivity(new Intent(WorkoutResultsView.this, ProfilePageView.class));
+            }
+        });
+
+        Button btnHM = (Button) findViewById(R.id.btnHm);
+        assert btnHM != null;
+        btnHM.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                startActivity(new Intent(WorkoutResultsView.this, CharitySelectionView.class));
             }
         });
 
@@ -130,11 +141,12 @@ public class WorkoutResultsView extends AppCompatActivity implements OnMapReadyC
             }
             i++;
         }
-        LatLngBounds bounds = builder.build();
+        if (i > 0) {
+            LatLngBounds bounds = builder.build();
+            int padding = 15; // offset from edges of the map in pixels
+            CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
 
-        int padding = 15; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-
-        map.animateCamera(cu);
+            map.animateCamera(cu);
+        }
     }
 }

@@ -10,6 +10,26 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.lorenzo.donatethedistance.ActivitySelectionView">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorAccent">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Select an activity"
+            android:textColor="@color/abc_primary_text_disable_only_material_dark"
+            android:textSize="30sp"
+            android:textStyle="bold"/>
+
+    </android.support.v7.widget.Toolbar>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,13 +59,6 @@
         android:layout_gravity="center"
         android:layout_weight="1"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Select an activity"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <Button
             android:id="@+id/walkBtn"
