@@ -46,12 +46,12 @@ public class ActivitySelectionView extends AppCompatActivity {
 
     }
 
-    /*public void walkSelection(View view) {
+    public void walkSelection(View view) {
         finish();
-        Intent intent = new Intent(this, WalkWorkoutView.class);
+        Intent intent = new Intent(this, walking_activity.class);
         intent.putExtra(SELECTED_CHARITY, message);
         startActivity(intent);
-    }*/
+    }
     public void bikeSelection(View view) {
         finish();
         Intent intent = new Intent(this, RunWorkoutView.class);
