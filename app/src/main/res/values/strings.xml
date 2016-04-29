@@ -1,3 +1,31 @@
 <resources>
-    <string name="app_name">DonateTheDistance</string>
+    <string name="app_name">Donate the Distance</string>
+    <string name="submit_txt">Submit</string>
+    <string name="weight_txt">Weight (lb)</string>
+    <string name="height_txt">Height</string>
+    <string name="last_name_txt">Last Name</string>
+    <string name="first_name_txt">First Name</string>
+    <string name="select_charity_txt">Select a charity</string>
+    <string name="humane_content_txt">Humane Society logo</string>
+    <string name="humane_name_txt">The Humane Society</string>
+    <string name="water_content_txt">Charity Water logo</string>
+    <string name="charity_water_name_txt">Charity Water</string>
+    <string name="stand_up_content_txt">Stand Up 2 Cancer logo</string>
+    <string name="stand_up_name_txt">Stand Up 2 Cancer</string>
+    <string name="habitat_content_txt">Habitat For Humanity logo</string>
+    <string name="habitat_name_txt">Habitat For Humanity</string>
+    <string name="run_txt">Run</string>
+    <string name="walk_txt">Walk</string>
+<string name="step_counter">
+         android.hardware.sensor.stepcounter
+   </string>
+
+
+<string name="step_detector">
+         android.hardware.sensor.stepdetector
+   </string>
+    <string name="bike_txt">Bike</string>
+    <string name="btn_stop_location_updates">STOP LOCATION UPDATES</string>
+    <string name="btn_start_location_updates">START LOCATION UPDATES</string>
+    <string name="google_app_id">1018926986547</string>
 </resources>
