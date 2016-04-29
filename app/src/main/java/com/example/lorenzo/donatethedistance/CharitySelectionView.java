@@ -37,7 +37,6 @@ public class CharitySelectionView extends AppCompatActivity {
                 return false;
             }
         });
-        //setSupportActionBar(myToolbar);
 
         TableLayout yourRootLayout = (TableLayout) findViewById(R.id.table);
         int count = yourRootLayout != null ? yourRootLayout.getChildCount() : 0;
@@ -54,7 +53,6 @@ public class CharitySelectionView extends AppCompatActivity {
                             if (v2 instanceof TextView) {
                                 Intent intent = new Intent(CharitySelectionView.this, ActivitySelectionView.class);
                                 intent.putExtra(SELECTED_CHARITY, (String) ((TextView) v2).getText());
-                                finish();
                                 startActivity(intent);
                             }
                         }

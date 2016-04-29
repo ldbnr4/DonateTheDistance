@@ -1,13 +1,17 @@
 package com.example.lorenzo.donatethedistance;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -33,6 +37,7 @@ public class ProfilePageView extends AppCompatActivity {
         return list;
     }
 
+    @TargetApi(Build.VERSION_CODES.M)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,7 @@ public class ProfilePageView extends AppCompatActivity {
         TextView lbl_TtlCal = (TextView) findViewById(R.id.lbl_TtlCalories);
         LineChart chart = (LineChart) findViewById(R.id.chart);
         ListView listView = (ListView) findViewById(R.id.listView);
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
 
         SQLiteDatabase donateDB = openOrCreateDatabase("DonateTheDistance", MODE_PRIVATE, null);
         Cursor resultSet = donateDB.rawQuery("Select * from User", null);
@@ -54,7 +59,7 @@ public class ProfilePageView extends AppCompatActivity {
         resultSet.close();
 
         Gson gson = new Gson();
-        resultSet = donateDB.rawQuery("SELECT * FROM Workouts ORDER BY datetime(date) DESC LIMIT 10", null);
+        resultSet = donateDB.rawQuery("SELECT * FROM Workouts ORDER BY datetime(date) DESC", null);
         resultSet.moveToFirst();
         float allMiles = 0, allCals = 0, yMax = 0;
         ArrayList<Entry> distances = new ArrayList<>(), donations = new ArrayList<>();
@@ -63,19 +68,21 @@ public class ProfilePageView extends AppCompatActivity {
         int x = 0;
         while (!resultSet.isAfterLast()) {
             WorkoutSummary summary = gson.fromJson(resultSet.getString(0), WorkoutSummary.class);
-            distances.add(new Entry(summary.distance, x));
-            donations.add(new Entry(summary.donationAmnt, x));
             allMiles += summary.distance;
             allCals += summary.caloriesBurned;
-            if (summary.distance > yMax) {
-                yMax = summary.distance;
+            if (x < 10) {
+                distances.add(new Entry(summary.distance, x));
+                donations.add(new Entry(summary.donationAmnt, x));
+                if (summary.distance > yMax) {
+                    yMax = summary.distance;
+                }
+                dates.add(summary.date);
+                types.add(summary.type);
+                charities.add(summary.charity);
+                dons.add(summary.donationAmnt);
+                cals.add(summary.caloriesBurned);
+                x++;
             }
-            dates.add(summary.date);
-            types.add(summary.type);
-            charities.add(summary.charity);
-            dons.add(summary.donationAmnt);
-            cals.add(summary.caloriesBurned);
-            x++;
             resultSet.moveToNext();
         }
         resultSet.close();
@@ -118,13 +125,22 @@ public class ProfilePageView extends AppCompatActivity {
         CustomAdapter adapter = new CustomAdapter(this, dates, types, charities, dons, cals);
         assert listView != null;
         listView.setAdapter(adapter);
+        listView.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        listView.setFocusable(false);
         assert myToolbar != null;
         myToolbar.setTitle("");
         myToolbar.inflateMenu(R.menu.tohome);
         myToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-
                 switch (menuItem.getItemId()) {
                     case R.id.action_home:
                         finish();
@@ -135,7 +151,5 @@ public class ProfilePageView extends AppCompatActivity {
                 return false;
             }
         });
-
-
     }
 }

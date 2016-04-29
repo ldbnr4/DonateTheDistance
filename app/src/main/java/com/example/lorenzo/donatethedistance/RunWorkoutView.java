@@ -34,7 +34,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -219,13 +218,13 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
      */
     protected void createLocationRequest() {
         mLocationRequest = new LocationRequest();
-        int UPDATE_INTERVAL = 10000;
+        int UPDATE_INTERVAL = 3000; // 3 seconds
         mLocationRequest.setInterval(UPDATE_INTERVAL);
-        int FATEST_INTERVAL = 1000;
+        int FATEST_INTERVAL = 1000; // 1 second
         mLocationRequest.setFastestInterval(FATEST_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        int DISPLACEMENT = 5;
-        mLocationRequest.setSmallestDisplacement(DISPLACEMENT); // 10 meters
+        int DISPLACEMENT = 5; // 5 meters
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT); // 5 meters
     }
 
     /**
@@ -448,24 +447,15 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
         } else if (mLastLocation.equals(location)) {
             return;
         }
-        location.setSpeed(randomInRange());
-        LocationStat stat = new LocationStat(location.getLatitude(), location.getLongitude(), location.getSpeed());
-        positions.add(stat);
 
+        location.setSpeed(randomInRange());
+        positions.add(new LocationStat(location.getLatitude(), location.getLongitude(), location.getSpeed()));
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (LocationStat m : positions) {
             builder.include(new LatLng(m.getLatitude(), m.getLongitude()));
         }
-        LatLngBounds bounds = builder.build();
+        mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 15));
 
-        int padding = 15; // offset from edges of the map in pixels
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
-
-        mGoogleMap.animateCamera(cu);
-
-        //Toast.makeText(getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
-
-        // Displaying the new location on UI
         displayLocation();
         if (positions.size() >= 2) {
             LocationStat prevLoc = positions.get(positions.size() - 2);
@@ -476,14 +466,14 @@ public class RunWorkoutView extends AppCompatActivity implements GoogleApiClient
 
             Location.distanceBetween(prevLoc.getLatitude(), prevLoc.getLongitude(),
                     location.getLatitude(), location.getLongitude(), distances);
-
             ttlDistance += distances[0];
-
-            lblDistance.setText(String.format(Locale.US, "%.2f", (ttlDistance * 0.00062137)));
+            lblDistance.setText(String.format(Locale.US, "%.2f", (ttlDistance * 0.00062137)) + "mi");
         }
-        lblPace.setText(String.format(Locale.US, "%.3f", (26.8224 / location.getSpeed())) + " min/mi");
-
-        // Assign the new location
+        if (location.getSpeed() == 0) {
+            lblPace.setText("0 min/mi");
+        } else {
+            lblPace.setText(String.format(Locale.US, "%.3f", (26.8224 / location.getSpeed())) + " min/mi");
+        }
         mLastLocation = location;
     }
 

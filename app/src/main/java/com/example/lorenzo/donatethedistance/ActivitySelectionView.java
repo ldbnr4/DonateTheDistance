@@ -3,6 +3,7 @@ package com.example.lorenzo.donatethedistance;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -27,6 +28,18 @@ public class ActivitySelectionView extends AppCompatActivity {
 
         assert textView != null;
         textView.setText(message);
+
+
+        Toolbar mToolBar = (Toolbar) findViewById(R.id.toolbar);
+        assert mToolBar != null;
+        mToolBar.setNavigationIcon(R.drawable.ic_arrow_back_white_18dp);
+
+        mToolBar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         ImageView imageView = (ImageView) findViewById(R.id.charityImage);
 

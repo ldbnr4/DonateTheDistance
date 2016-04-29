@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="@string/select_charity_txt"
+            android:textColor="@color/abc_primary_text_disable_only_material_dark"
             android:textSize="30sp"
             android:textStyle="bold"/>
 
