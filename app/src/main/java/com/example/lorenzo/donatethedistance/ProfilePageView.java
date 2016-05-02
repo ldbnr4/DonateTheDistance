@@ -24,6 +24,7 @@ import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.google.gson.Gson;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -43,10 +44,9 @@ public class ProfilePageView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_page_view);
 
-        TextView lbl_name = (TextView) findViewById(R.id.lbl_name);
-        TextView lbl_member = (TextView) findViewById(R.id.lbl_memberSince);
-        TextView lbl_TtlMiles = (TextView) findViewById(R.id.lbl_TtlMiles);
-        TextView lbl_TtlCal = (TextView) findViewById(R.id.lbl_TtlCalories);
+        TextView lbl_name = (TextView) findViewById(R.id.lbl_name), lbl_member = (TextView) findViewById(R.id.lbl_memberSince),
+                lbl_TtlMiles = (TextView) findViewById(R.id.lbl_TtlMiles), lbl_TtlCal = (TextView) findViewById(R.id.lbl_TtlCalories),
+                lbl_TtlDonated = (TextView) findViewById(R.id.lbl_TtlDonated);
         LineChart chart = (LineChart) findViewById(R.id.chart);
         ListView listView = (ListView) findViewById(R.id.listView);
         final Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -61,7 +61,7 @@ public class ProfilePageView extends AppCompatActivity {
         Gson gson = new Gson();
         resultSet = donateDB.rawQuery("SELECT * FROM Workouts ORDER BY datetime(date) DESC", null);
         resultSet.moveToFirst();
-        float allMiles = 0, allCals = 0, yMax = 0;
+        float allMiles = 0, allCals = 0, allDonations = 0;
         ArrayList<Entry> distances = new ArrayList<>(), donations = new ArrayList<>();
         ArrayList<String> dates = new ArrayList<>(), types = new ArrayList<>(), charities = new ArrayList<>();
         ArrayList<Float> dons = new ArrayList<>(), cals = new ArrayList<>();
@@ -70,12 +70,10 @@ public class ProfilePageView extends AppCompatActivity {
             WorkoutSummary summary = gson.fromJson(resultSet.getString(0), WorkoutSummary.class);
             allMiles += summary.distance;
             allCals += summary.caloriesBurned;
+            allDonations += summary.donationAmnt;
             if (x < 10) {
                 distances.add(new Entry(summary.distance, x));
                 donations.add(new Entry(summary.donationAmnt, x));
-                if (summary.distance > yMax) {
-                    yMax = summary.distance;
-                }
                 dates.add(summary.date);
                 types.add(summary.type);
                 charities.add(summary.charity);
@@ -105,12 +103,21 @@ public class ProfilePageView extends AppCompatActivity {
 
         assert lbl_name != null;
         lbl_name.setText(userName);
+
         assert lbl_member != null;
         lbl_member.setText(memberDate);
+
         assert lbl_TtlMiles != null;
         lbl_TtlMiles.setText(String.format(Locale.US, "%.1f", allMiles));
+
         assert lbl_TtlCal != null;
         lbl_TtlCal.setText(String.valueOf(allCals));
+
+        NumberFormat currencyInstance = NumberFormat.getCurrencyInstance(Locale.US);
+        String format = currencyInstance.format(allDonations);
+        assert lbl_TtlDonated != null;
+        lbl_TtlDonated.setText(format);
+
         assert chart != null;
         chart.setData(data);
         chart.getAxisRight().setEnabled(false);

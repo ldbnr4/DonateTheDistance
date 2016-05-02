@@ -13,6 +13,7 @@ import java.util.Locale;
 
 /**
  * Created by Lorenzo on 4/23/2016.
+ *
  */
 public class CustomAdapter extends ArrayAdapter {
 
@@ -22,7 +23,6 @@ public class CustomAdapter extends ArrayAdapter {
     private final ArrayList<String> charities;
     private final ArrayList<Float> donations;
     private final ArrayList<Float> calsBurned;
-    private LayoutInflater inflater;
 
     public CustomAdapter(Context context, ArrayList<String> dates, ArrayList<String> types, ArrayList<String> charities, ArrayList<Float> donations, ArrayList<Float> calsBurned) {
         super(context, R.layout.workout_history, dates);
@@ -37,7 +37,7 @@ public class CustomAdapter extends ArrayAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.workout_history, null);
         }
 

@@ -8,4 +8,10 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="Donate_the_Distance" parent="android:Theme.Material.NoActionBar">
+        <item name="android:colorAccent">@color/spring_rock_green</item>
+        <item name="android:colorPrimary">@color/spring_rock_lightGrey</item>
+        <item name="android:colorPrimaryDark">@color/spring_rock_darkGrey</item>
+    </style>
+
 </resources>
